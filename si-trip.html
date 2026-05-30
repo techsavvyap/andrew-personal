@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>South Island — Late August</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a18;
+    --ink-light: #5a5a54;
+    --ink-faint: #9a9a90;
+    --paper: #f5f2ec;
+    --paper-dark: #ede9e0;
+    --accent: #2d5a3d;
+    --accent-light: #e8f0eb;
+    --gold: #b8924a;
+    --border: rgba(26,26,24,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 3rem 4rem;
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 60% 40%, rgba(45,90,61,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 20% 80%, rgba(184,146,74,0.2) 0%, transparent 50%),
+      linear-gradient(160deg, #0d1a10 0%, #1a2818 40%, #0f1a1a 100%);
+  }
+
+  .hero-texture {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.6;
+  }
+
+  .hero-label {
+    position: relative;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero h1 {
+    position: relative;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 400;
+    color: var(--paper);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: #a8c9b0;
+  }
+
+  .hero-meta {
+    position: relative;
+    display: flex;
+    gap: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .hero-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hero-meta-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .hero-meta-value {
+    font-size: 14px;
+    color: rgba(245,242,236,0.7);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 4rem;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,242,236,0.4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: fadeUp 0.8s 1s forwards;
+    opacity: 0;
+  }
+
+  .hero-scroll::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: rgba(245,242,236,0.25);
+    display: block;
+  }
+
+  /* MAIN CONTENT */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* INTRO */
+  .intro {
+    padding: 5rem 0 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .intro p {
+    font-size: 1.2rem;
+    color: var(--ink-light);
+    max-width: 600px;
+    line-height: 1.8;
+  }
+
+  .intro p strong {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* SECTION HEADERS */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    margin-top: 4rem;
+  }
+
+  .section-number {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  /* ITINERARY */
+  .days { margin-bottom: 4rem; }
+
+  .day {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .day.visible { opacity: 1; transform: none; }
+
+  .day-number-col {
+    text-align: right;
+    padding-top: 4px;
+  }
+
+  .day-num {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--paper-dark);
+    line-height: 1;
+    display: block;
+  }
+
+  .day-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .day-content {}
+
+  .day-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+  }
+
+  .day-title.highlight { color: var(--accent); }
+
+  .day-activities {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .day-activities li {
+    font-size: 14px;
+    color: var(--ink-light);
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .day-activities li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--ink-faint);
+  }
+
+  .day-stay {
+    margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-light);
+    border: 1px solid rgba(45,90,61,0.2);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  .day-stay::before {
+    content: '⌂';
+    font-size: 11px;
+  }
+
+  .milford-note {
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    font-size: 13px;
+    color: var(--accent);
+    line-height: 1.6;
+  }
+
+  /* BUDGET */
+  .budget-section { margin-bottom: 5rem; }
+
+  .budget-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .budget-cell {
+    background: var(--paper);
+    padding: 1.5rem;
+    transition: background 0.2s;
+  }
+
+  .budget-cell:hover { background: var(--paper-dark); }
+
+  .budget-cat {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.5rem;
+  }
+
+  .budget-amount {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .budget-detail {
+    font-size: 12px;
+    color: var(--ink-faint);
+    line-height: 1.5;
+  }
+
+  .budget-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--ink);
+    border-radius: 12px;
+    color: var(--paper);
+  }
+
+  .budget-total-label {
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,242,236,0.5);
+  }
+
+  .budget-total-amount {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--paper);
+  }
+
+  .budget-total-sub {
+    font-size: 13px;
+    color: var(--gold);
+    margin-top: 4px;
+  }
+
+  /* TIPS */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 5rem;
+  }
+
+  .tip-card {
+    padding: 1.5rem;
+    background: var(--paper-dark);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .tip-card-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+
+  .tip-card p {
+    font-size: 13px;
+    color: var(--ink-light);
+    line-height: 1.65;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 0;
+    text-align: center;
+  }
+
+  footer p {
+    font-size: 13px;
+    color: var(--ink-faint);
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .hero { padding: 2rem; }
+    .hero h1 { font-size: clamp(2.5rem, 12vw, 4rem); }
+    .hero-meta { flex-wrap: wrap; gap: 1.5rem; }
+    .hero-scroll { display: none; }
+    .container { padding: 0 1.25rem; }
+    .intro { padding: 3rem 0 2.5rem; }
+    .day { grid-template-columns: 50px 1fr; gap: 1rem; }
+    .budget-grid { grid-template-columns: 1fr 1fr; }
+    .tips-grid { grid-template-columns: 1fr; }
+    .budget-total { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+
+  @media (max-width: 400px) {
+    .budget-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-texture"></div>
+  <p class="hero-label">Our next adventure</p>
+  <h1>South Island,<br><em>New Zealand</em></h1>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">When</span>
+      <span class="hero-meta-value">Late August · 7 nights</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Base</span>
+      <span class="hero-meta-value">Queenstown + Te Anau</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Budget</span>
+      <span class="hero-meta-value">$4,000 for two</span>
+    </div>
+  </div>
+  <div class="hero-scroll">scroll</div>
+</header>
+
+<main>
+  <div class="container">
+
+    <section class="intro">
+      <p>A <strong>scenic and relaxed loop</strong> from Queenstown through Central Otago wine country and into the raw grandeur of Fiordland — ending with Milford Sound, one of the world's great natural spectacles. August means crisp mountain air, snow-capped peaks, and the waterfalls at their most dramatic.</p>
+    </section>
+
+    <section class="days">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <h2 class="section-title">The Itinerary</h2>
+      </div>
+
+      <div class="day">
+        <div class="day-number-col">
+          <span class="day-num">1</span>
+          <span class="day-label">Sat</span>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Fly Auckland → Queenstown · Arrive & explore</h3>
+          <ul class="day-activities">
+            <li>Morning flight, ~2 hours — collect rental car at ZQN airport</li>
+            <li>Check in, stroll the Queenstown waterfront and town centre</li>
+            <li>Lake Wakatipu viewpoint at dusk — stunning winter light on the Remarkables</li>
+          </ul>
+          <span class="day-stay">Scenic Suites Queenstown · 4 nights</span>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-number-col">
+          <span class="day-num">2</span>
+          <span class="day-label">Sun</span>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Arrowtown & Crown Range</h3>
+          <ul class="day-activities">
+            <li>Drive to Arrowtown — gold rush history, great cafés, charming stone lanes</li>
+            <li>Return via Crown Range Summit — NZ's highest sealed road, sweeping panoramas in every direction</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-number-col">
+          <span class="day-num">3</span>
+          <span class="day-label">Mon</span>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Wānaka day trip</h3>
+          <ul class="day-activities">
+            <li>1-hour drive to Lake Wānaka — wander the lakefront village</li>
+            <li>Rocky Mountain viewpoint hike or Roy's Peak (2–4hrs, spectacular lake views)</li>
+            <li>Glendhu Bay scenic drive, back to Queenstown for a relaxed dinner</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-number-col">
+          <span class="day-num">4</span>
+          <span class="day-label">Tue</span>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">A leisurely Queenstown day</h3>
+          <ul class="day-activities">
+            <li>Skyline Gondola — Queenstown panorama, optional Luge run</li>
+            <li>TSS Earnslaw steamship cruise on Lake Wakatipu</li>
+            <li>Wander the wine bars and restaurants of central Queenstown at your own pace</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-number-col">
+          <span class="day-num">5</span>
+          <span class="day-label">Wed</span>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Drive to Te Anau · Gateway to Fiordland</h3>
+          <ul class="day-activities">
+            <li>Scenic 2.5-hour drive through the Southland plains into Fiordland</li>
+            <li>Stroll Te Anau lake front and the quiet main street</li>
+            <li>Te Anau Glowworm Caves evening tour — genuinely magical, book ahead</li>
+          </ul>
+          <span class="day-stay">Lakefront Lodge Te Anau · 2 nights</span>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-number-col">
+          <span class="day-num">6</span>
+          <span class="day-label">Thu</span>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title highlight">Milford Sound — the highlight</h3>
+          <ul class="day-activities">
+            <li>Leave by 7am — the 2hr drive through Fiordland National Park is breathtaking in itself</li>
+            <li>Mirror Lakes, the Homer Tunnel, hanging valleys draped in waterfalls</li>
+            <li>2-hour scenic cruise: Mitre Peak, Stirling Falls, fur seals, and hopefully dolphins</li>
+            <li>Return to Te Anau by mid-afternoon</li>
+          </ul>
+          <div class="milford-note">
+            August brings Milford at its most dramatic — waterfalls cascade from every cliff face after winter rain. Book your cruise at least 6–8 weeks ahead.
+          </div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="day-number-col">
+          <span class="day-num">7</span>
+          <span class="day-label">Fri</span>
+        </div>
+        <div class="day-content">
+          <h3 class="day-title">Te Anau → Queenstown · Fly home</h3>
+          <ul class="day-activities">
+            <li>Morning drive back to Queenstown (~2.5hrs)</li>
+            <li>Last coffee, lakeside walk, drop off the rental car</li>
+            <li>Evening flight back to Auckland</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="budget-section">
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <h2 class="section-title">Budget Breakdown</h2>
+      </div>
+
+      <div class="budget-grid">
+        <div class="budget-cell">
+          <div class="budget-cat">Flights</div>
+          <div class="budget-amount">~$400</div>
+          <div class="budget-detail">Return AKL–ZQN × 2 (Jetstar or Air NZ)</div>
+        </div>
+        <div class="budget-cell">
+          <div class="budget-cat">Accommodation</div>
+          <div class="budget-amount">~$1,400</div>
+          <div class="budget-detail">7 nights mid-range (~$200/night for two)</div>
+        </div>
+        <div class="budget-cell">
+          <div class="budget-cat">Rental Car</div>
+          <div class="budget-amount">~$500</div>
+          <div class="budget-detail">7 days including insurance and fuel</div>
+        </div>
+        <div class="budget-cell">
+          <div class="budget-cat">Milford Cruise</div>
+          <div class="budget-amount">~$220</div>
+          <div class="budget-detail">~$110 per person, book early for best price</div>
+        </div>
+        <div class="budget-cell">
+          <div class="budget-cat">Food & Dining</div>
+          <div class="budget-amount">~$700</div>
+          <div class="budget-detail">~$100/day for two, mix of cafés and restaurants</div>
+        </div>
+        <div class="budget-cell">
+          <div class="budget-cat">Activities</div>
+          <div class="budget-amount">~$300</div>
+          <div class="budget-detail">Gondola, Earnslaw, Glowworm Caves</div>
+        </div>
+      </div>
+
+      <div class="budget-total">
+        <div>
+          <div class="budget-total-label">Estimated total · 2 people</div>
+          <div class="budget-total-amount">~$3,520</div>
+        </div>
+        <div style="text-align:right">
+          <div class="budget-total-label">Within your budget</div>
+          <div class="budget-total-sub">~$480 buffer remaining</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <h2 class="section-title">Good to Know</h2>
+      </div>
+
+      <div class="tips-grid">
+        <div class="tip-card">
+          <h4 class="tip-card-title">Book flights now</h4>
+          <p>Best price is around 78 days before departure — which is right about now. Aim for a mid-week departure to save 15–20% versus Friday flights. Jetstar is cheapest; Air NZ has more flexibility.</p>
+        </div>
+        <div class="tip-card">
+          <h4 class="tip-card-title">Milford Sound in winter</h4>
+          <p>August is arguably the best time to visit. Prices are 20–35% lower than summer, crowds are thin, and rain brings the waterfalls to life. Check road conditions before driving — the highway can have icy patches.</p>
+        </div>
+        <div class="tip-card">
+          <h4 class="tip-card-title">Stay in Te Anau</h4>
+          <p>Basing yourself in Te Anau for Milford rather than Queenstown saves on accommodation and cuts 90 minutes of driving each way. Lakefront Lodge Te Anau (rated 4.6) is right on the water and can book your Milford tours.</p>
+        </div>
+        <div class="tip-card">
+          <h4 class="tip-card-title">Packing for August</h4>
+          <p>Queenstown in late August is crisp and clear — expect daytime highs of 8–12°C. Pack a warm mid-layer, a waterproof jacket, and decent walking shoes. Snow on the Remarkables is likely and beautiful.</p>
+        </div>
+        <div class="tip-card">
+          <h4 class="tip-card-title">What to pre-book</h4>
+          <p>Book the Milford cruise and Te Anau Glowworm Caves as soon as flights are confirmed — both sell out weeks ahead. Accommodation and car hire are easiest through booking.com and Rental Cars NZ.</p>
+        </div>
+        <div class="tip-card">
+          <h4 class="tip-card-title">The drive is the destination</h4>
+          <p>The road from Te Anau to Milford through Fiordland is one of the world's great drives. Allow at least 2.5 hours each way and stop often — Mirror Lakes, the Chasm, and the Homer Tunnel are all unmissable.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>South Island · Late August · 7 nights · Two of us &nbsp;·&nbsp; <em style="font-family: 'Playfair Display', serif; font-style: italic;">let's go</em></p>
+  </div>
+</footer>
+
+<script>
+  const days = document.querySelectorAll('.day');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  days.forEach(d => observer.observe(d));
+</script>
+
+</body>
+</html>
