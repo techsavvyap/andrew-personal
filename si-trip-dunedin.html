@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Southern Scenic Route — Dunedin to Milford Sound</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1c1c1a;
+    --ink-light: #58574f;
+    --ink-faint: #9a998f;
+    --paper: #f4f1ea;
+    --paper-dark: #eae6dc;
+    --paper-mid: #e0dcd0;
+    --ocean: #1d4a5e;
+    --ocean-light: #e4edf1;
+    --gold: #a07c3a;
+    --forest: #2e4a30;
+    --border: rgba(28,28,26,0.1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-weight: 300;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 30% 60%, rgba(29,74,94,0.5) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 40% at 80% 20%, rgba(46,74,48,0.3) 0%, transparent 55%),
+      linear-gradient(175deg, #0a1a10 0%, #0d2030 50%, #0f1a15 100%);
+  }
+
+  .hero-texture {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+
+  .hero-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 4rem;
+    padding-bottom: 3rem;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.2s forwards;
+  }
+
+  .hero-eyebrow-line {
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-eyebrow span {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(3.2rem, 9vw, 8rem);
+    font-weight: 400;
+    color: #f0ece3;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.35s forwards;
+  }
+
+  .hero h1 .sub {
+    display: block;
+    font-style: italic;
+    color: #8ab5c8;
+    font-size: 0.65em;
+  }
+
+  .hero-meta {
+    position: relative;
+    display: flex;
+    gap: 0;
+    margin-top: 2.5rem;
+    border-top: 1px solid rgba(240,236,227,0.12);
+    padding-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.9s 0.55s forwards;
+  }
+
+  .hero-meta-item {
+    flex: 1;
+    padding-right: 2rem;
+    border-right: 1px solid rgba(240,236,227,0.12);
+    margin-right: 2rem;
+  }
+
+  .hero-meta-item:last-child {
+    border-right: none;
+    margin-right: 0;
+  }
+
+  .hero-meta-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(240,236,227,0.4);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .hero-meta-value {
+    font-size: 13px;
+    color: rgba(240,236,227,0.75);
+  }
+
+  /* ROUTE STRIP */
+  .route-strip {
+    position: relative;
+    background: var(--ocean);
+    padding: 1.5rem 4rem;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .route-stop {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  .route-stop-name {
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(240,236,227,0.85);
+    white-space: nowrap;
+  }
+
+  .route-arrow {
+    width: 40px;
+    height: 1px;
+    background: rgba(240,236,227,0.25);
+    margin: 0 12px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .route-arrow::after {
+    content: '›';
+    position: absolute;
+    right: -6px;
+    top: -9px;
+    color: rgba(240,236,227,0.3);
+    font-size: 12px;
+  }
+
+  /* CONTENT */
+  .container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 2.5rem;
+  }
+
+  /* INTRO */
+  .intro {
+    padding: 5rem 0 3.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .intro-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .intro-label::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--ink-faint);
+  }
+
+  .intro p {
+    font-size: 1.15rem;
+    color: var(--ink-light);
+    max-width: 640px;
+    line-height: 1.85;
+  }
+
+  .intro p strong { color: var(--ocean); font-weight: 500; }
+
+  /* SECTION */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin: 4rem 0 2.5rem;
+  }
+
+  .section-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 400;
+    color: var(--paper-dark);
+    line-height: 1;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  /* REGION HEADERS */
+  .region {
+    margin: 3rem 0 0;
+  }
+
+  .region-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ocean);
+    padding: 0.4rem 0.8rem;
+    background: var(--ocean-light);
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+
+  /* DAYS */
+  .day {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 2rem;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.55s, transform 0.55s;
+  }
+
+  .day.visible { opacity: 1; transform: none; }
+
+  .day-num-col { text-align: right; padding-top: 2px; }
+
+  .day-num-big {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: var(--paper-mid);
+    line-height: 1;
+    display: block;
+  }
+
+  .day-label-small {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .day-body {}
+
+  .day-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+    line-height: 1.3;
+  }
+
+  .day-title.highlight { color: var(--ocean); }
+
+  .activities {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .activities li {
+    font-size: 14px;
+    color: var(--ink-light);
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .activities li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--ink-faint);
+  }
+
+  .stay-tag {
+    margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--paper-dark);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 3px 12px;
+    font-size: 12px;
+    color: var(--ink-light);
+  }
+
+  .stay-tag::before { content: '⌂'; font-size: 11px; color: var(--ink-faint); }
+
+  .tip {
+    margin-top: 1rem;
+    padding: 0.85rem 1.1rem;
+    background: var(--ocean-light);
+    border-left: 2px solid var(--ocean);
+    font-size: 13px;
+    color: var(--ocean);
+    line-height: 1.65;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .wildlife-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #edf3e8;
+    border: 1px solid rgba(46,74,48,0.2);
+    border-radius: 100px;
+    padding: 3px 12px;
+    font-size: 12px;
+    color: var(--forest);
+    margin-top: 8px;
+    margin-right: 4px;
+  }
+
+  /* COMPARISON */
+  .compare-intro {
+    margin: 4rem 0 2rem;
+    padding: 2rem;
+    background: var(--paper-dark);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .compare-intro p {
+    font-size: 14px;
+    color: var(--ink-light);
+    line-height: 1.75;
+  }
+
+  .compare-intro strong { color: var(--ink); font-weight: 500; }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .compare-card {
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--paper);
+  }
+
+  .compare-card.featured {
+    border-color: var(--ocean);
+    border-width: 1.5px;
+  }
+
+  .compare-card-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.75rem;
+  }
+
+  .compare-card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .compare-list {
+    list-style: none;
+    font-size: 13px;
+    color: var(--ink-light);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .compare-list li::before { content: '+ '; color: var(--ocean); font-weight: 500; }
+  .compare-list li.con::before { content: '– '; color: var(--ink-faint); }
+
+  /* BUDGET */
+  .budget-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .budget-cell {
+    background: var(--paper);
+    padding: 1.4rem;
+    transition: background 0.2s;
+  }
+
+  .budget-cell:hover { background: var(--paper-dark); }
+
+  .budget-cat {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.5rem;
+  }
+
+  .budget-amt {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .budget-note {
+    font-size: 12px;
+    color: var(--ink-faint);
+    line-height: 1.5;
+  }
+
+  .budget-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: var(--ocean);
+    border-radius: 12px;
+    margin-bottom: 5rem;
+  }
+
+  .budget-total-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(240,236,227,0.5);
+  }
+
+  .budget-total-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: #f0ece3;
+  }
+
+  .budget-total-sub {
+    font-size: 13px;
+    color: rgba(138,181,200,0.9);
+    margin-top: 3px;
+  }
+
+  /* TIPS */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 5rem;
+  }
+
+  .tip-card {
+    padding: 1.4rem;
+    background: var(--paper-dark);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .tip-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  .tip-card p { font-size: 13px; color: var(--ink-light); line-height: 1.65; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 0;
+    text-align: center;
+  }
+
+  footer p { font-size: 13px; color: var(--ink-faint); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (max-width: 640px) {
+    .hero-content { padding: 2rem; }
+    .hero h1 { font-size: clamp(2.8rem, 13vw, 5rem); }
+    .hero-meta { flex-wrap: wrap; gap: 1.5rem; }
+    .hero-meta-item { border-right: none; padding-right: 0; margin-right: 0; flex: none; width: 45%; }
+    .route-strip { padding: 1rem 1.5rem; }
+    .container { padding: 0 1.25rem; }
+    .day { grid-template-columns: 48px 1fr; gap: 1rem; }
+    .budget-grid { grid-template-columns: 1fr 1fr; }
+    .compare-grid, .tips-grid { grid-template-columns: 1fr; }
+    .budget-total { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+
+  @media (max-width: 400px) {
+    .budget-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-texture"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span>Southern Scenic Route · Option 2</span>
+    </div>
+    <h1>Dunedin to<br><span class="sub">Milford Sound</span></h1>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">When</span>
+        <span class="hero-meta-value">Late August · 7 nights</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Route</span>
+        <span class="hero-meta-value">600 km Southern Scenic Route</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Budget</span>
+        <span class="hero-meta-value">~$3,800 for two</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Vibe</span>
+        <span class="hero-meta-value">Wild coast, wildlife, fiords</span>
+      </div>
+    </div>
+  </div>
+  <div class="route-strip">
+    <div class="route-stop"><span class="route-stop-name">Dunedin</span></div>
+    <div class="route-arrow"></div>
+    <div class="route-stop"><span class="route-stop-name">Otago Peninsula</span></div>
+    <div class="route-arrow"></div>
+    <div class="route-stop"><span class="route-stop-name">The Catlins</span></div>
+    <div class="route-arrow"></div>
+    <div class="route-stop"><span class="route-stop-name">Invercargill</span></div>
+    <div class="route-arrow"></div>
+    <div class="route-stop"><span class="route-stop-name">Te Anau</span></div>
+    <div class="route-arrow"></div>
+    <div class="route-stop"><span class="route-stop-name">Milford Sound</span></div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <section class="intro">
+      <p class="intro-label">The road less taken</p>
+      <p>This is the <strong>Southern Scenic Route</strong> — 600 km of rugged coastline, ancient rainforest, petrified sea floors, and some of NZ's rarest wildlife. Unlike the Queenstown circuit, this route is largely tourist-free. You'll trade the après-ski crowds for <strong>yellow-eyed penguins at dusk</strong>, sea caves you can walk into at low tide, and the slow drama of the deep south — all ending at Milford Sound.</p>
+    </section>
+
+    <section>
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2 class="section-title">The Itinerary</h2>
+      </div>
+
+      <!-- Dunedin -->
+      <div class="region">
+        <span class="region-label">Dunedin · Days 1–2</span>
+
+        <div class="day">
+          <div class="day-num-col">
+            <span class="day-num-big">1</span>
+            <span class="day-label-small">Sat</span>
+          </div>
+          <div class="day-body">
+            <h3 class="day-title">Fly Auckland → Dunedin · Arrive & explore the city</h3>
+            <ul class="activities">
+              <li>~2hr flight, collect rental car at DUD airport</li>
+              <li>Dunedin's Victorian architecture — the Railway Station is one of NZ's most photographed buildings</li>
+              <li>Baldwin Street (world's steepest residential street), Octagon city centre</li>
+              <li>Dinner at one of the Princes Street restaurants</li>
+            </ul>
+            <span class="stay-tag">Scenic Hotel Dunedin City · 2 nights</span>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="day-num-col">
+            <span class="day-num-big">2</span>
+            <span class="day-label-small">Sun</span>
+          </div>
+          <div class="day-body">
+            <h3 class="day-title">Otago Peninsula — wildlife day</h3>
+            <ul class="activities">
+              <li>Morning: Royal Albatross Centre at Taiaroa Head — the world's only mainland albatross colony</li>
+              <li>Monarch Wildlife Cruise — spot albatross, little blue penguins, and fur seals from the water</li>
+              <li>Sandfly Bay at dusk for rare Hoiho (yellow-eyed penguins) coming ashore</li>
+            </ul>
+            <span class="wildlife-tag">🐧 Yellow-eyed penguins</span>
+            <span class="wildlife-tag">🦅 Royal albatross</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Catlins -->
+      <div class="region">
+        <span class="region-label">The Catlins · Days 3–4</span>
+
+        <div class="day">
+          <div class="day-num-col">
+            <span class="day-num-big">3</span>
+            <span class="day-label-small">Mon</span>
+          </div>
+          <div class="day-body">
+            <h3 class="day-title">Drive into the Catlins · Nugget Point & Cathedral Caves</h3>
+            <ul class="activities">
+              <li>Drive south from Dunedin (~1.5hrs to Kaka Point)</li>
+              <li>Nugget Point Lighthouse — rated 4.9★, one of NZ's most dramatic coastal viewpoints; fur seals on the rocks below</li>
+              <li>Roaring Bay bird hide — yellow-eyed penguins at dusk (one of the world's rarest penguins)</li>
+              <li>Cathedral Caves if the tide allows — a 30m-high sea cave system, torch required</li>
+            </ul>
+            <div class="tip">Cathedral Caves are only accessible within ~2 hours of low tide. Check tides before heading out — the DOC website has a tide calculator.</div>
+            <span class="stay-tag">Catlins accommodation · 1 night (Owaka or Papatowai)</span>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="day-num-col">
+            <span class="day-num-big">4</span>
+            <span class="day-label-small">Tue</span>
+          </div>
+          <div class="day-body">
+            <h3 class="day-title">Curio Bay, McLean Falls & on to Invercargill</h3>
+            <ul class="activities">
+              <li>Curio Bay — a 180-million-year-old petrified forest exposed at low tide; yellow-eyed penguins nest here too</li>
+              <li>Porpoise Bay — Hector's dolphins often surf the waves right in front of you</li>
+              <li>McLean Falls — a stunning 22m tiered waterfall (40min return walk through native bush)</li>
+              <li>Arrive Invercargill by mid-afternoon</li>
+            </ul>
+            <span class="wildlife-tag">🐬 Hector's dolphins</span>
+            <span class="wildlife-tag">🌿 Petrified forest</span>
+            <span class="stay-tag">The Langlands Hotel, Invercargill · 1 night</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Invercargill & Te Anau -->
+      <div class="region">
+        <span class="region-label">Invercargill & Fiordland · Days 5–7</span>
+
+        <div class="day">
+          <div class="day-num-col">
+            <span class="day-num-big">5</span>
+            <span class="day-label-small">Wed</span>
+          </div>
+          <div class="day-body">
+            <h3 class="day-title">Invercargill · Drive to Te Anau</h3>
+            <ul class="activities">
+              <li>Morning: Invercargill's E. Hayes & Sons hardware store — famously eccentric, worth a wander</li>
+              <li>Optional: Bluff (30min south) — the southernmost tip of the South Island, iconic signpost</li>
+              <li>2hr drive north to Te Anau through the Southland plains</li>
+              <li>Te Anau Glowworm Caves evening tour — book well ahead</li>
+            </ul>
+            <span class="stay-tag">Lakefront Lodge Te Anau · 2 nights</span>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="day-num-col">
+            <span class="day-num-big">6</span>
+            <span class="day-label-small">Thu</span>
+          </div>
+          <div class="day-body">
+            <h3 class="day-title highlight">Milford Sound — the destination</h3>
+            <ul class="activities">
+              <li>Leave Te Anau by 7am — the drive through Fiordland is extraordinary in winter</li>
+              <li>Mirror Lakes, the Homer Tunnel, hanging valleys spilling with waterfalls after rain</li>
+              <li>2hr scenic cruise: Mitre Peak, Stirling Falls, fur seals, and hopefully dolphins</li>
+              <li>Return to Te Anau by mid-afternoon; relax lakeside</li>
+            </ul>
+            <div class="tip">August brings Milford's waterfalls at full power after winter rain — this is genuinely the best time of year to see it. Book your cruise 6–8 weeks ahead.</div>
+          </div>
+        </div>
+
+        <div class="day">
+          <div class="day-num-col">
+            <span class="day-num-big">7</span>
+            <span class="day-label-small">Fri</span>
+          </div>
+          <div class="day-body">
+            <h3 class="day-title">Te Anau → Dunedin → Fly home</h3>
+            <ul class="activities">
+              <li>Drive back to Dunedin (~3.5hrs via SH1) or drop the car in Invercargill and fly home</li>
+              <li>Evening flight back to Auckland from DUD (or IVC)</li>
+            </ul>
+            <div class="tip">One-way car hire (pick up Dunedin, drop in Invercargill) can save backtracking and costs around $30–50 extra. Worth it if you prefer not to retrace the route.</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VS COMPARISON -->
+    <section>
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2 class="section-title">How it compares to the Queenstown route</h2>
+      </div>
+
+      <div class="compare-intro">
+        <p>Both itineraries include Milford Sound and 7 nights for two within a $4,000 budget. The Queenstown route is more polished; this one is more <strong>raw and rewarding</strong>. Think of the Queenstown itinerary as the greatest hits — this one is the deep cut that people who've done it say was the highlight of their entire NZ trip.</p>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-card featured">
+          <div class="compare-card-label">This itinerary</div>
+          <div class="compare-card-title">Dunedin · Catlins · Invercargill · Te Anau · Milford</div>
+          <ul class="compare-list">
+            <li>Wildlife-rich: albatross, yellow-eyed penguins, dolphins, seals</li>
+            <li>Largely off the tourist trail — far fewer crowds</li>
+            <li>Dramatic coastal scenery throughout the whole route</li>
+            <li>Excellent base at Te Anau for Milford</li>
+            <li>August: waterfalls at their peak</li>
+            <li class="con">More driving overall (~600km total)</li>
+            <li class="con">Fewer restaurants and nightlife options</li>
+            <li class="con">Catlins accommodation is basic</li>
+          </ul>
+        </div>
+        <div class="compare-card">
+          <div class="compare-card-label">Alternative</div>
+          <div class="compare-card-title">Queenstown · Arrowtown · Wānaka · Te Anau · Milford</div>
+          <ul class="compare-list">
+            <li>Queenstown is a world-class base with great dining</li>
+            <li>Wānaka is stunning and relaxed</li>
+            <li>Great restaurant and bar scene</li>
+            <li>Slightly lower total budget (~$3,520)</li>
+            <li class="con">Much more touristy — crowds everywhere</li>
+            <li class="con">Less unique wildlife</li>
+            <li class="con">Less sense of discovery</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUDGET -->
+    <section>
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2 class="section-title">Budget Breakdown</h2>
+      </div>
+
+      <div class="budget-grid">
+        <div class="budget-cell">
+          <div class="budget-cat">Flights</div>
+          <div class="budget-amt">~$450</div>
+          <div class="budget-note">Return AKL–DUD × 2 (slightly pricier than QT)</div>
+        </div>
+        <div class="budget-cell">
+          <div class="budget-cat">Accommodation</div>
+          <div class="budget-amt">~$1,150</div>
+          <div class="budget-note">7 nights (Dunedin hotel · basic Catlins · Invercargill · Te Anau)</div>
+        </div>
+        <div class="budget-cell">
+          <div class="budget-cat">Rental Car</div>
+          <div class="budget-amt">~$550</div>
+          <div class="budget-note">7 days + one-way drop-off option in Invercargill</div>
+        </div>
+        <div class="budget-cell">
+          <div class="budget-cat">Milford Cruise</div>
+          <div class="budget-amt">~$220</div>
+          <div class="budget-note">~$110pp — book early</div>
+        </div>
+        <div class="budget-cell">
+          <div class="budget-cat">Food & Dining</div>
+          <div class="budget-amt">~$650</div>
+          <div class="budget-note">~$90/day — fewer restaurants in the Catlins means self-catering some nights</div>
+        </div>
+        <div class="budget-cell">
+          <div class="budget-cat">Activities</div>
+          <div class="budget-amt">~$380</div>
+          <div class="budget-note">Albatross Centre, Monarch cruise, Glowworm Caves, Cathedral Caves entry</div>
+        </div>
+      </div>
+
+      <div class="budget-total">
+        <div>
+          <div class="budget-total-label">Estimated total · 2 people</div>
+          <div class="budget-total-amount">~$3,400</div>
+        </div>
+        <div style="text-align:right">
+          <div class="budget-total-label">Within your budget</div>
+          <div class="budget-total-sub">~$600 buffer remaining</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIPS -->
+    <section>
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2 class="section-title">Good to Know</h2>
+      </div>
+
+      <div class="tips-grid">
+        <div class="tip-card">
+          <h4>Flights to Dunedin</h4>
+          <p>Return AKL–DUD for two runs about $300–$450. <strong>August is actually the cheapest month</strong> to fly this route. Air New Zealand has the most flights; Jetstar is cheapest. Book around 75 days ahead for best prices.</p>
+        </div>
+        <div class="tip-card">
+          <h4>The Catlins: no glamping</h4>
+          <p>Accommodation in the Catlins is basic — motels, holiday parks, and simple B&Bs. That's part of the charm. Owaka and Papatowai are the main bases. Stock up on food in Balclutha before heading south.</p>
+        </div>
+        <div class="tip-card">
+          <h4>Wildlife timing matters</h4>
+          <p>Yellow-eyed penguins come ashore at dusk — plan your days to be at Sandfly Bay or Curio Bay by 5–6pm. The Albatross Centre and Monarch Cruise are best booked ahead. August can mean chicks are still in nests.</p>
+        </div>
+        <div class="tip-card">
+          <h4>Cathedral Caves: check the tides</h4>
+          <p>These spectacular sea caves are only accessible within ~2 hours of low tide. Check the DOC website before driving there — it would be a shame to arrive and find the entrance underwater.</p>
+        </div>
+        <div class="tip-card">
+          <h4>One-way car hire tip</h4>
+          <p>Consider picking up in Dunedin and dropping in Invercargill (~$30–50 extra). This avoids backtracking 3.5hrs and you can fly home from Invercargill or Queenstown instead, adding flexibility.</p>
+        </div>
+        <div class="tip-card">
+          <h4>August weather down south</h4>
+          <p>The Catlins and Invercargill can be cold and wet — average 8–10°C with frequent showers. Pack proper waterproofs, layers, and sturdy shoes. The upside: waterfalls everywhere, dramatic moody skies, and almost no other tourists.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>Southern Scenic Route · Late August · 7 nights · The road less taken &nbsp;·&nbsp; <em style="font-family: 'Cormorant Garamond', serif; font-style: italic;">let's go south</em></p>
+  </div>
+</footer>
+
+<script>
+  const days = document.querySelectorAll('.day');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 70);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  days.forEach(d => observer.observe(d));
+</script>
+
+</body>
+</html>
